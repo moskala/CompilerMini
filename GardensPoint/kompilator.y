@@ -21,14 +21,14 @@ start		: program Eof
 			| error Eof 
 				{ 
 				++Compiler.errors;
-				Console.WriteLine("error"); 
+				Console.WriteLine("syntax error"); 
 				yyerrok();
 				YYABORT;
 				}
 			| Eof
 				{ 
 				++Compiler.errors;
-				Console.WriteLine("Unexpected EOF"); 
+				Console.WriteLine("syntax error - unexpected EOF"); 
 				yyerrok();
 				YYABORT;
 				}
@@ -49,6 +49,27 @@ program	  	: Program OpenBr CloseBr
 			| Program OpenBr dec_list expr_list CloseBr	
 				{
 				Compiler.root = new Compiler.ProgramTree($4, Compiler.lineno);
+				}
+			| Program OpenBr dec_list Eof 
+				{
+				Console.WriteLine("syntax error - unexpected EOF, missing close bracket"); 
+				++Compiler.errors;
+				yyerrok();
+				YYABORT;
+				}
+			| Program OpenBr expr_list Eof
+				{
+				Console.WriteLine("syntax error - unexpected EOF, missing close bracket"); 
+				++Compiler.errors;
+				yyerrok();
+				YYABORT;
+				}
+			| Program OpenBr dec_list expr_list Eof
+				{
+				Console.WriteLine("syntax error - unexpected EOF, missing close bracket"); 
+				++Compiler.errors;
+				yyerrok();
+				YYABORT;
 				}
 			;
 

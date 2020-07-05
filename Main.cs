@@ -182,7 +182,7 @@ public class Compiler
             case TypeT.BoolT:
                 return "bool";
             default:
-                return "string";
+                return "void";
         }
     }
 
@@ -246,6 +246,9 @@ public class Compiler
                     if (argType == TypeT.VoidT)
                         SetError($"Wrong argument type in cast to double operation", line);
                     break;
+                default:
+                    SetError("internal gencode error", line);
+                    break;
             }
         }
         public override TypeT CheckType()
@@ -275,6 +278,9 @@ public class Compiler
                     if (argType != TypeT.VoidT)
                         type = TypeT.DoubleT;
                     break;
+                default:
+                    SetError("internal gencode error", line);
+                    break;
             }
 
             return type;
@@ -301,6 +307,9 @@ public class Compiler
                     break;
                 case Tokens.Minus:
                     Compiler.EmitCode("neg");
+                    break;
+                default:
+                    SetError("internal gencode error", line);
                     break;
             }
         }
@@ -434,8 +443,7 @@ public class Compiler
                     Compiler.EmitCode("and");
                     break;
                 default:
-                    Console.WriteLine($"  line {line,3}:  internal gencode error");
-                    errors++;
+                    SetError("internal gencode error", line);
                     break;
             }
         }
@@ -472,8 +480,6 @@ public class Compiler
             left.GenCode();
             string labelIfFirstFalse = GetNewLabel();
             string labelEnd = GetNewLabel();
-
-            //right.GenCode();
 
             switch (kind)
             {
@@ -564,8 +570,7 @@ public class Compiler
                     Compiler.EmitCode("div");
                     break;
                 default:
-                    Console.WriteLine($"  line {line,3}:  internal gencode error");
-                    errors++;
+                    SetError("internal gencode error", line);
                     break;
             }
         }
@@ -692,6 +697,9 @@ public class Compiler
                     expr.GenCode();
                     Compiler.EmitCode("call void [mscorlib]System.Console::Write(bool)");
                     break;
+                default:
+                    SetError("internal gencode error", line);
+                    break;
             }
             Compiler.EmitCode("");
         }
@@ -758,6 +766,9 @@ public class Compiler
                     break;
                 case TypeT.BoolT:
                     Compiler.EmitCode("call bool [mscorlib]System.Boolean::TryParse(string, bool&)");
+                    break;
+                default:
+                    SetError("internal gencode error", line);
                     break;
             }
             Compiler.EmitCode("pop");

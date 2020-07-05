@@ -6,7 +6,7 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  WATERMELON007
-//  DateTime: 7/5/2020 2:54:24 PM
+//  DateTime: 7/6/2020 1:48:40 AM
 //  UserName: moska
 //  GPLEX input file <kompilator.lex - 7/4/2020 10:01:39 PM>
 //  GPLEX frame file <embedded resource>
